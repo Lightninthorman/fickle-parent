@@ -9,7 +9,7 @@ class App extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            user:""
+            user:{}
         }
     }
 
@@ -25,7 +25,7 @@ class App extends React.Component{
         firebase.auth().onAuthStateChanged((user)=>{
             if(user){
                 this.setState({
-                    user:user.displayName
+                    user:user
                 })
             }else{
                 this.setState({
@@ -38,7 +38,7 @@ class App extends React.Component{
     render(){
         return(
             <div className="App">
-                {this.state.user ? <Main user={this.state.user}/> : <Login />}
+                {this.state.user ? <Main user={this.state.user.displayName}/> : <Login />}
             </div>
         )
     }

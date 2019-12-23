@@ -20,9 +20,12 @@ class Login extends React.Component {
     e.preventDefault();
     fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
     .then((user)=>{
+        console.log(user)
         this.setState({
-            error:''
+            error:'',
+            userName: user.user.displayName
         });
+        console.log(this.state.userName);
     }).catch((error) => {
         this.setState({
             error:error.message
@@ -35,22 +38,21 @@ class Login extends React.Component {
     fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((user)=>{
         console.log('user',user);
         if(user){
-            this.setState({
-                error:''
-            })
             let updateUser = fire.auth().currentUser
             updateUser.updateProfile({
+                error:'',
                 displayName: this.state.userName
+        }).then((newUser) => {
+            console.log('newUser',fire.auth().currentUser.displayName);
         })
     }
     })
     .catch((error) => {
         this.setState({
             error:error.message
-        })
-  })
-}
-
+        });
+      })
+  }
   render() {
     return (
         <div className="col-md-6">
@@ -70,7 +72,7 @@ class Login extends React.Component {
                 <button type="submit" onClick={this.login} className="btn btn-primary">Login</button>
                 <button onClick={this.signup} style={{marginLeft: '25px'}} className="btn btn-success">Signup</button>
             </form>
-            {this.state.error ? <div className="alert alert-danger">{this.state.error}</div> : null}
+            {this.state.error ? <div className="alert alert-danger">{this.state.error} </div> : null}
 
         </div>
     );
